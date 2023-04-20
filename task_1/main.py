@@ -8,7 +8,7 @@ logger.remove(0)
 logger.add(sys.stdout, colorize=False, format="<level>{level}:{file}:{function}:{line}: - {message}</level>", level="DEBUG")
 
 
-convert_case={
+CONVERT_CASE={
     "И": 'nomn',
     "Р": 'gent',
     "Д": 'datv',
@@ -16,19 +16,19 @@ convert_case={
     "Т": 'ablt',
     "П": 'loct'
 }
-convert_gender={
+CONVERT_GENDER={
     "М": 'masc',
     "Ж": 'femn',
     "С": 'neut',
 }
 
-type_counts=['тысяча', 'миллион', 'миллиард']
+TYPE_COUNTS=['тысяча', 'миллион', 'миллиард']
 
-one_genders={"М":'один',
+ONE_GENDERS={"М":'один',
              "Ж":'одна',
              "С":'одно'}
 
-two_genders={"М":'два',
+TWO_GENDERS={"М":'два',
             "Ж":'две',
             "С": 'два'}
 
@@ -59,7 +59,6 @@ def need_morph_thousand_mln_mlrd(normal_form, nSum):
         use_teens=False
     if str(amount_thousand)[-1] == '1' and not use_teens:
         return False
-    # elif str(amount_thousand)[-1] in ('2','3','4') and not use_teens:
     return True
 
 
@@ -86,14 +85,14 @@ def morph_one_word(word, nSum, sCase):
         parser = parsers[0]
 
     # Проверка слов тысяча, млн,млрд
-    if not parser.normal_form in type_counts:
-        args = [convert_case[sCase]]
+    if not parser.normal_form in TYPE_COUNTS:
+        args = [CONVERT_CASE[sCase]]
         return morphing(parser, args)
 
     if need_morph_thousand_mln_mlrd(parser.normal_form, nSum):
-        args = [convert_case[sCase], 'plur']
+        args = [CONVERT_CASE[sCase], 'plur']
     else:
-        args = [convert_case[sCase], 'sing']
+        args = [CONVERT_CASE[sCase], 'sing']
     return morphing(parser, args)
 
 
@@ -118,9 +117,9 @@ def sumProp(nSum:int, sGender: str,sCase: str):
     if sCase=='И':
         if gender:
             if str(nSum)[-1]=='1':
-                some_words[-1]=one_genders[sGender]
+                some_words[-1]=ONE_GENDERS[sGender]
             else:
-                some_words[-1] = two_genders[sGender]
+                some_words[-1] = TWO_GENDERS[sGender]
             return " ".join(some_words)
         else:
             return string
@@ -130,7 +129,7 @@ def sumProp(nSum:int, sGender: str,sCase: str):
         for word in some_words[:-1]:
             morph_word=morph_one_word(word, nSum, sCase)
             end_word += str(morph_word) + ' '
-        args=[convert_case[sCase], convert_gender[sGender]]
+        args=[CONVERT_CASE[sCase], CONVERT_GENDER[sGender]]
         morph_last_word=morphing(morph.parse(some_words[-1])[0], args)
         end_word +=morph_last_word
         res = end_word.strip()
