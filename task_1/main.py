@@ -57,5 +57,5 @@ def sumProp(nSum:int, sGender: str,sCase: str):
 
 
 if __name__=="__main__":
-    res=sumProp(1223222, "Ж", "Т")
+    res=sumProp(1223242, "Ж", "Т")
     print(res)
