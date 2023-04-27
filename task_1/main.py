@@ -4,7 +4,7 @@ import json
 
 with open("number_case.json", encoding='utf8') as f:
     number_case = json.load(f)
-print(__file__)
+
 TYPE_COUNTS = [('тысячи', 'тысяч'), ('миллиона', 'миллионов'), ('миллиарда', 'миллиардов')]
 ONE_GENDERS = {"М": 'один',
                "Ж": 'одна',
