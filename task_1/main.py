@@ -1,4 +1,4 @@
-from num_to_nom import num2text
+from num2t4ru import num2text
 import json
 
 
@@ -29,11 +29,11 @@ def morph_one_word(word, sCase):
 
 def sumProp(nSum:int, sGender: str,sCase: str):
     if not isinstance(nSum, int) or nSum<0 or nSum>999999999999:
-        raise ValueError('Аргумент nSum(число) должен быть целочисленным и в области [0,999999999999]')
+        raise ('Аргумент nSum(число) должен быть целочисленным и в области [0,999999999999]')
     if not isinstance(sGender, str):
-        raise TypeError('Аргумент sGender(род) должен быть строкой')
+        raise ('Аргумент sGender(род) должен быть строкой')
     if not isinstance(sCase, str):
-        raise TypeError('Аргумент sCase(падеж) должен быть строкой')
+        raise ('Аргумент sCase(падеж) должен быть строкой')
     string=num2text(nSum)
     some_words = string.split()
     end_word = ''
@@ -57,5 +57,5 @@ def sumProp(nSum:int, sGender: str,sCase: str):
 
 
 if __name__=="__main__":
-    res=sumProp(122322, "Ж", "Т")
+    res=sumProp(1223222, "Ж", "Т")
     print(res)
