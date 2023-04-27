@@ -1,15 +1,30 @@
-import sys
-import time
+from num2t4ru import num2text
+import json
 
-from loguru import logger
 
-from morph_defs import *
-logger.remove(0)
-# # production
-# logger.add("number_to_kirilitsa.log", colorize=False, format="<blue>{level}:{file}:{function}:{line}: - {message}</blue>", level="DEBUG",
-#            rotation="1h", retention=0)
-# debug
-logger.add(sys.stdout, colorize=True, format="<blue>{level}:{file}:{function}:{line}: - {message}</blue>", level="INFO")
+with open("number_case.json", encoding='utf8') as f:
+    number_case = json.load(f)
+print(__file__)
+TYPE_COUNTS = [('тысячи', 'тысяч'), ('миллиона', 'миллионов'), ('миллиарда', 'миллиардов')]
+ONE_GENDERS = {"М": 'один',
+               "Ж": 'одна',
+               "С": 'одно'}
+TWO_GENDERS = {"М": 'два',
+               "Ж": 'две',
+               "С": 'два'}
+
+def morph_one_word(word, sCase):
+    # Проверка слов тысяча, млн,млрд
+    for i, tuples in enumerate(TYPE_COUNTS):
+        if word in tuples:
+            if i == 0:
+                word = 'тысячи'
+            if i == 1:
+                word = 'миллионы'
+            if i == 2:
+                word = 'миллиарды'
+            break
+    return number_case[word][sCase]
 
 
 def sumProp(nSum:int, sGender: str,sCase: str):
@@ -19,46 +34,28 @@ def sumProp(nSum:int, sGender: str,sCase: str):
         raise ('Аргумент sGender(род) должен быть строкой')
     if not isinstance(sCase, str):
         raise ('Аргумент sCase(падеж) должен быть строкой')
-    string=int_to_rus(nSum)
+    string=num2text(nSum)
     some_words = string.split()
     end_word = ''
 
     #проверка на склоняемость по роду
-    gender = False
-    if need_gender(nSum):
-        gender=True
-        amount = len(some_words)
+    if some_words[-1]=='один':
+        some_words[-1]=ONE_GENDERS[sGender]
+    elif some_words[-1]=='два':
+        some_words[-1] = TWO_GENDERS[sGender]
 
     #Если именительный падеж
     if sCase=='И':
-        if gender:
-            if str(nSum)[-1]=='1':
-                some_words[-1]=ONE_GENDERS[sGender]
-            else:
-                some_words[-1] = TWO_GENDERS[sGender]
-            return " ".join(some_words)
-        else:
-            return string
+        return " ".join(some_words)
 
-    #Если НЕ именительный падеж и род имеет значение
-    if gender:
-        for word in some_words[:-1]:
-            morph_word=morph_one_word(word, nSum, sCase)
-            end_word += str(morph_word) + ' '
-        args=[CONVERT_CASE[sCase], CONVERT_GENDER[sGender]]
-        morph_last_word=morphing(morph.parse(some_words[-1])[0], args)
-        end_word +=morph_last_word
-        res = end_word.strip()
-        return res
-
-    #Если НЕ именительный падеж и род не имеет значение
+    #Если НЕ именительный падеж
     for word in some_words:
-        morph_word=morph_one_word(word, nSum, sCase)
+        morph_word=morph_one_word(word, sCase)
         end_word += str(morph_word) + ' '
     res = end_word.strip()
     return res
 
 
 if __name__=="__main__":
-    res=sumProp(123212, "Ж", "И")
+    res=sumProp(123212, "Ж", "Т")
     print(res)
