@@ -4,6 +4,7 @@ import unittest
 from main import sumProp
 
 
+
 class TestStrToText(unittest.TestCase):
 
     def test1(self):
