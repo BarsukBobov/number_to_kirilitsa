@@ -77,12 +77,14 @@ class TestStrToText(unittest.TestCase):
         self.assertEqual(sumProp(999999999999, "Ж", "И"), "девятьсот девяносто девять миллиардов девятьсот девяносто девять миллионов девятьсот девяносто девять тысяч девятьсот девяносто девять")
 
     def test_exception(self):
-        with self.assertRaises(BaseException):
+        with self.assertRaises(ValueError) as error:
             sumProp(1000000000000, "Ж", "И")
+        assert 'Аргумент nSum(число) должен быть целочисленным и в области [0,999999999999]'==error.exception.args[0]
 
     def test_exception2(self):
-        with self.assertRaises(BaseException):
+        with self.assertRaises(ValueError) as error:
             sumProp(-1, "Ж", "И")
+        assert 'Аргумент nSum(число) должен быть целочисленным и в области [0,999999999999]'==error.exception.args[0]
 
 
 
