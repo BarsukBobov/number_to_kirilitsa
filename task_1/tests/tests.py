@@ -4,6 +4,7 @@ import pymorphy2
 import num2rus
 morph = pymorphy2.MorphAnalyzer()
 
+
 convert_case={
     "И": 'nomn',
     "Р": 'gent',
