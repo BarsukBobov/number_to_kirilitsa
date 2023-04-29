@@ -1,4 +1,4 @@
-from num2t4ru import num2text
+from num_to_nom import num2text
 import json
 
 
@@ -57,5 +57,5 @@ def sumProp(nSum:int, sGender: str,sCase: str):
 
 
 if __name__=="__main__":
-    res=sumProp(0, "Ж", "Т")
+    res=sumProp(1223222, "Ж", "Т")
     print(res)
