@@ -1,4 +1,4 @@
-from num2t4ru import num2text
+from num_to_nom import num2text
 import json
 
 
