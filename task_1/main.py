@@ -57,9 +57,5 @@ def sumProp(nSum:int, sGender: str,sCase: str):
 
 
 if __name__=="__main__":
-<<<<<<<<< Temporary merge branch 1
-    res=sumProp(1223222, "Ж", "Т")
-=========
-    res=sumProp(0, "Ж", "Т")
->>>>>>>>> Temporary merge branch 2
+    res=sumProp(122322, "Ж", "Т")
     print(res)
